@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<h1>Portfolio</h1>
+<br>
+
+<form action="{% url 'portfolio' %}" class="d-flex" method="POST">
+	{% csrf_token %}
+	<input class="form-control me-2" type="search" placeholder="Add Ticker To Portfolio" aria-label="Search" name="ticker"> <!-- pass the name to view.py functions -->
+	<button class="btn btn-outline-info" type="submit">Add Stock</button>
+</form><br>
+
+<table class="table table-bordered">
+  <thead style="background-color: #e3f2fd;">
+    <tr>
+      <th scope="col">Company Name</th>
+      <th scope="col">Stock Price</th>
+      <th scope="col">Previous Close</th>
+      <th scope="col">Market Cap</th>
+      <th scope="col">YTD Change</th>
+      <th scope="col">52WK High</th>
+      <th scope="col">52WK Low</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% if ticker %}
+
+  		
+
+			{% for item in output %}
+				
+					<tr>
+						<th scope="row">{{ item.companyName }}</th>
+				      	<td>${{ item.latestPrice }}</td>
+				      	<td>${{ item.previousClose }}</td>
+				      	<td>${{ item.marketCap }}</td>
+				      	<td>${{ item.ytdChange }}</td>
+				     	<td>${{ item.week52High }}</td>
+				      	<td>${{ item.week52Low }}</td>
+					     <td><a href="/">Delete</a></td>
+					</tr>
+			
+
+			{% endfor %}
+	{% endif %}
+  </tbody>
+</table>
+
+
+{% for item in ticker %}
+	{{ item }} - <a href="{% url 'delete' item.id %}">Delete Stock</a><br>
+{% endfor %}
+
+
+
+
+{% endblock %}
